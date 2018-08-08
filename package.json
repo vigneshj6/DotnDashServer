@@ -6,12 +6,17 @@
     "start": "node ./bin/www"
   },
   "dependencies": {
+    "body-parser": "^1.18.3",
     "cookie-parser": "^1.4.3",
     "debug": "~2.6.9",
     "express": "~4.16.0",
+    "express-json-validator-middleware": "^1.2.3",
+    "express-session": "^1.15.6",
     "http-errors": "~1.6.2",
     "jade": "~1.11.0",
     "morgan": "^1.9.0",
+    "node-uuid": "^1.4.8",
+    "pg": "^7.4.3",
     "sequelize": "^4.38.0"
   },
   "repository": {
@@ -23,5 +28,8 @@
   "bugs": {
     "url": "https://github.com/vigneshj6/DotnDashServer/issues"
   },
-  "homepage": "https://github.com/vigneshj6/DotnDashServer#readme"
+  "homepage": "https://github.com/vigneshj6/DotnDashServer#readme",
+  "devDependencies": {
+    "express-swagger-generator": "^1.1.7"
+  }
 }
