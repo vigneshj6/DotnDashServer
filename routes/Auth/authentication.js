@@ -1,7 +1,7 @@
 var UserSession = require("../../models").UserSession;
 const SkipAuthentications = [
     {
-        path : "/v1/users/login",
+        path : "/api/v1/users/login",
         method : "POST"
     },
     {

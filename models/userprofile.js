@@ -1,5 +1,16 @@
 'use strict';
 module.exports = (sequelize, DataTypes) => {
+/**
+ * @typedef UserProfile
+ * @property {string} userId.required
+ * @property {string} password.required 
+ * @property {string} permissionId
+ * @property {string} status.required
+ * @property {date} effectiveFromDate.required
+ * @property {date} effectiveTillDate
+ * @property {string} emailId.required
+ * @property {string} phoneNumber
+ */
   var UserProfile = sequelize.define('UserProfile', {
     userId: DataTypes.STRING,
     password: DataTypes.STRING,

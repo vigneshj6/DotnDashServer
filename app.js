@@ -5,6 +5,8 @@ var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 var bodyParser = require('body-parser');
 
+
+
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 
@@ -25,7 +27,7 @@ let options = {
             version: '1.0.0',
         },
         host: 'localhost:3000',
-        basePath: '/v1',
+        basePath: '/api/v1',
         produces: [
             "application/json",
             "application/xml"
@@ -36,12 +38,12 @@ let options = {
                 type: 'apiKey',
                 in: 'header',
                 name: 'Authorization',
-                description: "",
+                description: "Give the Authorization token from login to all REST API calls",
             }
         }
     },
     basedir: __dirname, //app absolute path
-    files: ['./routes/**/*.js','./models/**/*.js'] //Path to the API handle folder
+    files: ['./models/**/*.js','./routes/**/*.js'] //Path to the API handle folder
 };
 expressSwagger(options)
 // view engine setup
@@ -60,8 +62,8 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 //authentication handler
 app.use(authenticationHandler.authenticate)
-app.use('/', indexRouter);
-app.use('/v1/users', usersRouter);
+app.use('/api', indexRouter);
+app.use('/api/v1/users', usersRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
