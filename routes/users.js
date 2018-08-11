@@ -15,10 +15,16 @@ var Utils = require('../Utils/utils');
  * @property {string} userId.required
  * @property {string} token.required
  */
+
+ /**
+  * @typedef LoginInput
+  * @property {string} userId.required
+  * @property {string} password.required
+  */
 /**
  * @route POST /users/login
  * @group User - Operations about user
- * @param {UserProfile.model} userprofile.body.required - Input
+ * @param {LoginInput.model} logininput.body.required - Input
  * @returns {LoginInfo.model} 200 - Login info
  * @returns {Error}  default - Unexpected error
  */
