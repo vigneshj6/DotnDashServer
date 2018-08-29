@@ -1,14 +1,17 @@
 var express = require('express');
 var sequelize = require('sequelize');
 var bcrypt = require('bcrypt');
+var mailer = require('nodemailer');
+var uuid = require('node-uuid');
 
 //Salt Should be changed for production
 var salt = 8;
 
 var router = express.Router();
-var UserSession = require('../models').UserSession;
-var UserProfile = require('../models').UserProfile;
-var uuid = require('node-uuid');
+var models = require('../models'); 
+var UserSession = models.UserSession;
+var UserProfile = models.UserProfile;
+var OTPData = models.OTPData;
 var Utils = require('../Utils/utils');
 /**
  * @typedef LoginInfo
@@ -115,12 +118,103 @@ router.get('/',function(req,res){
 });
 router.put('/',function(req,res){
 
-  UserProfile.update(req.body).then(
-    function(val)
-    {
-      res.send(val);
+  UserProfile.findAll({
+    where: {
+      userId: req.body.userId
+    }
+  }).then(function(val){
+    if(val.length!=1){
+      res.status(400).send("Error")
+    }
+    else{
+      req.body.password = val[0].password
+      UserProfile.update(req.body).then(
+        function(val)
+        {
+          res.send(val);
+        }
+      );
+    }
+
+  })
+});
+
+router.post('/otp/request',function(req,res){
+  UserProfile.findAll({
+    where: {
+      userId: req.body.userId
+    }
+  }).then(
+    function(val){
+      if(val.length>0){
+        // to be removed before production
+        var userData = val[0];
+        var uuidGen = uuid.v4();
+        var otpVal = uuidGen.substr(0,uuidGen.indexOf("-")-1);
+        var OTP = {
+          UserId: val[0].userId,
+          OTP: otpVal,
+          RequestedOn: Date.now(),
+          RouteType: "Email",
+          RouteId: val[0].emailId
+        };
+        OTPData.setOTPData(OTP)
+        .then((val)=>
+          {
+            // Should be removed in prod
+            console.log("inside then");            
+            let cred = {
+              user : "dotndashindia@gmail.com",
+              pass : "karthisri2709"
+            }
+            let x = Utils.mailer(cred,"dotndashindia@gmail.com",userData.emailId,"OTP","OTP for your User Id "+userData.userId+" is "+otpVal);            
+            res.send("OTP Sent Successfully")
+          })
+        .catch((err)=>{
+          res.send(err);
+        })
+      } 
     }
   );
 });
-  
+
+  router.post('/otp/response',function(req,res){
+    UserProfile.findAll({
+      where: {
+        userId: req.body.userId
+      }
+    }).then(
+      function(val){
+        if(val.length>0){
+          OTPData.findAll({
+            where:{
+              UserId: val[0].userId,
+              OTP: req.body.otpVal
+            }
+          })
+          .then((val)=>
+            {
+              var generatedToken = uuid.v4();
+              if(val.length>0)
+              UserSession.create(
+                {
+                  "userId": "admin",
+                  "token": generatedToken,
+                  "permissionId": "admin"
+                }
+              )
+              .then(function(val){
+                res.send({"userId":val.dataValues.userId,"token":generatedToken});
+              })
+              else
+                res.send("Error")
+              
+            })
+          .catch((err)=>{
+            res.send(err);
+          })
+        } 
+      }
+    );
+  });
 module.exports = router;

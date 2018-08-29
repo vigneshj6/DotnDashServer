@@ -1,0 +1,4 @@
+Create a model using below command
+    requirement : sequelize-cli
+    syntax : sequelize model:create --name OTPData --attributes userid:string,otpl:create --name <TableName> --attributes <FieldName1>:<FieldType1>,<FieldName2>:<FieldType2>
+    ex : sequelize model:create --name OTPData --attributes userid:string,otpl:create --name OTPData --attributes UserId:string,OTP:string,RequestedOn:string,RouteType:string,RouteId:string

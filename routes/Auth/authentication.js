@@ -5,8 +5,12 @@ const SkipAuthentications = [
         method : "POST"
     },
     {
-        path : "",
-        method : ""
+        path : "/api/v1/users/otp/request",
+        method : "POST"
+    },
+    {
+        path : "/api/v1/users/otp/response",
+        method : "POST"
     }
 ];
 module.exports = {
