@@ -26,7 +26,6 @@ let options = {
             title: 'Swagger',
             version: '1.0.0',
         },
-        host: 'localhost:3000',
         basePath: '/api/v1',
         produces: [
             "application/json",
@@ -35,11 +34,12 @@ let options = {
         schemes: ['http', 'https'],
         securityDefinitions: {
             JWT: {
-                type: 'apiKey',
-                in: 'header',
-                name: 'Authorization',
+                type: "apiKey",
+                in: "header",
+                name: "Authorization",
                 description: "Give the Authorization token from login to all REST API calls",
             }
+            
         }
     },
     basedir: __dirname, //app absolute path
@@ -77,7 +77,7 @@ app.use(function(err, req, res, next) {
   console.dir(err);
     if (err instanceof ValidationError) {
         // At this point you can execute your error handling code
-        res.status(400).send('invalid');
+        res.status(400).send('invalid'+err.dir());
         //next();
     }
   res.locals.message = err.message;
