@@ -61,7 +61,14 @@ router.post('/login',Utils.validate({body: Utils.LoginInfo}), function(req, res)
     }
   );
 });
-
+/**
+ * @route POST /users/logout
+ * @group User - Operations about user
+ * @param {LoginInfo.model} logininput.body.required - Input
+ * @returns {string} 200 - Login info
+ * @returns {Error}  default - Unexpected error
+ * @security ApiKeyAuth
+ * */
 router.post('/logout',Utils.validate({body: Utils.UserReference}), function(req, res) {
   
   UserProfile.findAll({
@@ -90,6 +97,7 @@ router.post('/logout',Utils.validate({body: Utils.UserReference}), function(req,
  * @param {UserProfile.model} userprofile.body.required - Input
  * @returns {UserProfileReference.model} 200 - Reference info
  * @returns {Error}  default - Unexpected error
+ * @security ApiKeyAuth
  */
 router.post('/',function(req,res){
   req.body.password = bcrypt.hashSync(req.body.password,salt);
@@ -107,6 +115,7 @@ router.post('/',function(req,res){
  * @group User - Operations about user
  * @returns {UserProfile.model} 200 - List of UserProfile
  * @returns {Error}  default - Unexpected error
+ * @security ApiKeyAuth
  */
 router.get('/',function(req,res){
   UserProfile.findAll().then(

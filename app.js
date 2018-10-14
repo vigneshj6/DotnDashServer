@@ -33,10 +33,10 @@ let options = {
         ],
         schemes: ['http', 'https'],
         securityDefinitions: {
-            JWT: {
+            ApiKeyAuth: {
                 type: "apiKey",
                 in: "header",
-                name: "Authorization",
+                name: "authorization",
                 description: "Give the Authorization token from login to all REST API calls",
             }
             
